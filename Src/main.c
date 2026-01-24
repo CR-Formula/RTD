@@ -100,14 +100,14 @@ int main(void)
   GPIO_PinState tractiveStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_4);
   GPIO_PinState brakePedalStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_5);
   GPIO_PinState buttonStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_6);
-  GPIO_PinState APPSoutput = HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_SET); // off when high
+  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_SET); // off when high
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if (HAL_GPIO_ReadPin (tractiveStatus && brakePedalStatus && buttonStatus))
+    if (tractiveStatus && brakePedalStatus && buttonStatus)
     {
       // set speaker output, if timer hasn't already been started
       if (timerStartStatus == 0)
@@ -218,9 +218,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 1;
+  htim2.Init.Prescaler = 999;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 479;
+  htim2.Init.Period = 95999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
