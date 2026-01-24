@@ -93,9 +93,12 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   MX_CAN_Init();
-  /* USER CODE BEGIN 2 */
-  int timerStartStatus = 0; // used to make sure time doesn't restart if it's already been started
 
+  /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim2); // wasn't showing up in code auto generate but tutorial had this so added here
+  
+  int timerStartStatus = 0; // used to make sure time doesn't restart if it's already been started
+  int *tssPointer = &timerStartStatus;
   // Initialize peripherals connected to GPIO pins
   GPIO_PinState tractiveStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_4);
   GPIO_PinState brakePedalStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_5);
@@ -107,6 +110,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // check status of pins
+    tractiveStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_4);
+    brakePedalStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_5);
+    buttonStatus = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_6);
+
     if (tractiveStatus && brakePedalStatus && buttonStatus)
     {
       // set speaker output, if timer hasn't already been started
@@ -291,10 +299,9 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim, int* timerStartStatus)
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
   HAL_GPIO_WritePin (GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
-  timerStartStatus = 0;
   // TODO use LED on test board to see if timer is functioning properly
 }
 /* USER CODE END 4 */
