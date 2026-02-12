@@ -26,6 +26,16 @@
             "device": "STM32F091RCT6",
             "interface": "swd",
             "svdFile": "${workspaceFolder}/STM32F091.svd",
+        },
+
+        {
+            "name": "Cortex Debug",
+            "cwd": "${workspaceFolder}",
+            "executable": "./bin/executable.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "jlink"
         }
     ]
 }
