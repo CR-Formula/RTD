@@ -22,7 +22,7 @@ void loop() {
     digitalWrite(6, LOW);
 
     // (3) Check the brake pedal position (0-1023)
-    if (analogRead(A0) < 950) {
+    if (analogRead(A0) > 450) {
       enablingBeep();
     }
     else {
